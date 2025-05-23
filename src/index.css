@@ -1,0 +1,28 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-theme-bg-dark text-theme-text-secondary font-sans;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply text-theme-text-primary;
+}
+
+/* Custom scrollbar to match dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-theme-panel-dark; /* Use theme color */
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-theme-border rounded; /* Use theme color */
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500; /* Slightly lighter gray on hover */
+}
