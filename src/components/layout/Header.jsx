@@ -34,7 +34,7 @@ const Header = ({ onHomeClick }) => {
             rel="noopener noreferrer"
             className="text-theme-text-secondary hover:text-brand-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ml-2"
           >
-            Donate Us
+            Donate Me
           </a>
         </nav>
       </div>
