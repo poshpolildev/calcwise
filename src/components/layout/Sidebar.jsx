@@ -23,8 +23,9 @@ const Sidebar = ({ onSelectTool, isOpen, setIsOpen }) => {
     ), [lowerSearchTerm]
   );
 
+  // onSelectTool (passed as prop) will now be handleSelectTool from App.jsx, which uses navigate()
   const handleToolClick = (toolId) => {
-    onSelectTool(toolId);
+    onSelectTool(toolId); // This will call handleSelectTool in App.jsx which navigates
     if (isOpen && window.innerWidth < 768) {
       setIsOpen(false);
     }
@@ -32,8 +33,9 @@ const Sidebar = ({ onSelectTool, isOpen, setIsOpen }) => {
 
   const ToolButton = ({ tool }) => (
     <button
+      type="button" // Explicitly set type to button
       key={tool.id}
-      onClick={() => handleToolClick(tool.id)}
+      onClick={() => handleToolClick(tool.id)} // Calls the function that will navigate
       className="w-full text-left px-4 py-2.5 text-sm text-theme-text-secondary hover:bg-theme-border hover:text-theme-accent rounded-md transition-all duration-200 ease-in-out focus:outline-none focus:bg-theme-border focus:ring-1 focus:ring-theme-accent"
     >
       {tool.name}
@@ -45,7 +47,8 @@ const Sidebar = ({ onSelectTool, isOpen, setIsOpen }) => {
   return (
     <>
       <button
-      className="md:hidden fixed top-3 left-5 z-50 p-2 bg-theme-panel-dark rounded-md text-theme-text-primary hover:bg-theme-border"
+        type="button"
+        className="md:hidden fixed top-2 left-5 z-50 p-2 bg-theme-panel-dark rounded-md text-theme-text-primary hover:bg-theme-border"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -68,7 +71,7 @@ const Sidebar = ({ onSelectTool, isOpen, setIsOpen }) => {
           </div>
         </div>
 
-        <div className="overflow-y-auto flex-grow px-4 pb-4 space-y-6 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-700"> {/* You can theme scrollbar track/thumb with theme-* too */}
+        <div className="overflow-y-auto flex-grow px-4 pb-4 space-y-6 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-700">
           {(filteredPopularTools.length > 0 || !isActiveSearch) && (
             <div>
               <h3 className="text-sm font-semibold text-theme-text-secondary uppercase tracking-wider mb-2 px-1">Most Popular</h3>
@@ -96,6 +99,7 @@ const Sidebar = ({ onSelectTool, isOpen, setIsOpen }) => {
             ) : (
               <>
                 <button
+                  type="button"
                   onClick={() => setIsAllToolsExpanded(!isAllToolsExpanded)}
                   className="w-full flex items-center justify-between px-1 py-2 text-sm font-semibold text-theme-text-secondary uppercase tracking-wider hover:text-theme-accent transition-colors duration-200 focus:outline-none"
                 >
