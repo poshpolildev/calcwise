@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://calcwise.vercel.app/</loc>
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq> 
+  </url>
+  <url><loc>https://calcwise.vercel.app/#emi</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#loanAffordability</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#loanRepayment</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#interestRate</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#simpleInterest</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#compoundInterest</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#mortgage</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#creditCard</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#retirementSavings</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#savingsGoal</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#investmentReturn</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#sip</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#fd</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#rd</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#netWorth</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#budgetPlanner</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#inflation</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calcwise.vercel.app/#breakEven</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+</urlset>
