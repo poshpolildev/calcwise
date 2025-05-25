@@ -7,7 +7,7 @@ const formatPercentage = (percentage) => {
 };
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -40,6 +40,7 @@ const InterestRateOutput = ({ results, currencySymbol, inputs }) => {
   const { annualRate, calculatedSi } = results;
 
   return (
+    // Panel styling and main title removed. App.jsx handles them.
     <div className="space-y-5">
       {inputs && (
           <>

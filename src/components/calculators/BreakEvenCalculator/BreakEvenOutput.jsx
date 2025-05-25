@@ -3,7 +3,7 @@ import React from 'react';
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount) || !isFinite(amount)) return `N/A`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const formatUnits = (units) => {
@@ -46,7 +46,7 @@ const BreakEvenOutput = ({ results, currencySymbol }) => {
       <ResultRowDisplay label="Contribution Margin Per Unit:" value={formatCurrency(contributionMarginPerUnit, currencySymbol)} textColorClass="text-gray-300" />
       <ResultRowDisplay label="Break-Even Point in Units:" value={formatUnits(breakEvenUnits)} unitSuffix=" units" isTotal />
       <ResultRowDisplay label="Break-Even Point in Revenue:" value={formatCurrency(breakEvenRevenue, currencySymbol)} isTotal />
-
+      
       <div className="mt-4 p-3 bg-theme-input-bg rounded-md text-sm text-theme-text-secondary">
         <p>
           To cover all costs, you need to sell approximately {formatUnits(breakEvenUnits)} units,

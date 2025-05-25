@@ -1,9 +1,10 @@
 // src/components/calculators/AmortizationCalculator/AmortizationOutput.jsx
 import React from 'react';
+// No chart imports needed unless you add a chart here
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const AmortizationOutput = ({ results, currencySymbol }) => {
@@ -25,7 +26,6 @@ const AmortizationOutput = ({ results, currencySymbol }) => {
   const { schedule, monthlyPayment, totalInterest, totalPayment } = results;
 
   return (
-    // Panel styling and main title removed. App.jsx handles them.
     <div className="space-y-5">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4 text-center">
           <div className="p-2 bg-theme-input-bg rounded">
@@ -44,7 +44,7 @@ const AmortizationOutput = ({ results, currencySymbol }) => {
 
       <div className="overflow-x-auto max-h-[400px] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-700 border border-theme-border rounded-md">
         <table className="min-w-full divide-y divide-theme-border">
-          <thead className="bg-theme-input-bg sticky top-0"> {/* Use input-bg for header for contrast */}
+          <thead className="bg-theme-input-bg sticky top-0">
             <tr>
               <th className="px-3 py-2.5 text-left text-xs font-medium text-theme-text-secondary uppercase tracking-wider">Month</th>
               <th className="px-3 py-2.5 text-right text-xs font-medium text-theme-text-secondary uppercase tracking-wider">Beginning Balance</th>
@@ -54,7 +54,7 @@ const AmortizationOutput = ({ results, currencySymbol }) => {
               <th className="px-3 py-2.5 text-right text-xs font-medium text-theme-text-secondary uppercase tracking-wider">Ending Balance</th>
             </tr>
           </thead>
-          <tbody className="bg-theme-panel-dark divide-y divide-theme-border"> {/* Panel dark for rows or input-bg/lighter? */}
+          <tbody className="bg-theme-panel-dark divide-y divide-theme-border">
             {schedule.map((row) => (
               <tr key={row.month} className="hover:bg-theme-border/30 transition-colors duration-150">
                 <td className="px-3 py-2.5 whitespace-nowrap text-xs text-theme-text-secondary">{row.month}</td>

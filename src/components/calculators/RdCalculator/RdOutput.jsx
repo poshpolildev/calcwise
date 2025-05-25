@@ -1,13 +1,26 @@
 // src/components/calculators/RdCalculator/RdOutput.jsx
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
-// ChartJS.register(ArcElement, Tooltip, Legend, Title);
+// ADD THESE IMPORTS AND REGISTRATION:
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+} from 'chart.js';
 
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+);
+// END OF ADDED IMPORTS AND REGISTRATION
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -60,19 +73,18 @@ const RdOutput = ({ results, currencySymbol }) => {
   const chartOptions = {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'top', labels: { color: '#F3F4F6' } }, // theme-text-primary
+      legend: { position: 'top', labels: { color: '#F3F4F6' } },
       title: { display: true, text: 'Deposit Breakdown', color: '#F3F4F6', font: { size: 16 } },
       tooltip: { callbacks: { label: function (context) { let label = context.label || ''; if (label) { label += ': '; } if (context.parsed !== null) { label += formatCurrency(context.parsed, currencySymbol); } return label; } } }
     },
   };
 
   return (
-    // Panel styling and main title removed. App.jsx handles them.
     <div className="space-y-5">
       <ResultRowDisplay label="Total Amount Deposited:" value={formatCurrency(totalDeposited, currencySymbol)} textColorClass="text-blue-400" />
       <ResultRowDisplay label="Total Interest Earned:" value={formatCurrency(totalInterest, currencySymbol)} textColorClass="text-green-400" />
       <ResultRowDisplay label="Maturity Value:" value={formatCurrency(maturityValue, currencySymbol)} isTotal />
-
+      
       {(totalDeposited > 0 || totalInterest > 0) && (
         <div className="mt-6 h-64 md:h-72 flex justify-center">
           <div style={{ width: '100%', maxWidth: '280px' }}>

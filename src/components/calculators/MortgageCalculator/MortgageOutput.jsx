@@ -1,12 +1,30 @@
 // src/components/calculators/MortgageCalculator/MortgageOutput.jsx
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-// import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-// ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// ADD THESE IMPORTS AND REGISTRATION:
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+// END OF ADDED IMPORTS AND REGISTRATION
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -42,23 +60,23 @@ const MortgageOutput = ({ results, currencySymbol }) => {
     labels: ['Loan Breakdown'],
     datasets: [
       {
-        label: 'Loan Amount', // Changed from Principal Loan Amount for context
+        label: 'Loan Amount',
         data: [loanAmount],
-        backgroundColor: 'rgba(59, 130, 246, 0.7)', // theme-accent
+        backgroundColor: 'rgba(59, 130, 246, 0.7)', 
         borderColor: 'rgba(59, 130, 246, 1)',
         borderWidth: 1,
       },
       {
         label: 'Total Interest Paid',
         data: [totalInterest],
-        backgroundColor: 'rgba(239, 68, 68, 0.6)', // A red color
+        backgroundColor: 'rgba(239, 68, 68, 0.6)', 
         borderColor: 'rgba(239, 68, 68, 1)',
         borderWidth: 1,
       },
     ],
   };
 
-  const chartOptions = {
+ const chartOptions = {
     responsive: true, maintainAspectRatio: false, indexAxis: 'y',
     scales: {
       x: { stacked: true, ticks: { color: '#9CA3AF' }, grid: { color: '#374151' }, title: { display: true, text: `Amount (${currencySymbol})`, color: '#F3F4F6' } },
@@ -77,7 +95,7 @@ const MortgageOutput = ({ results, currencySymbol }) => {
       <ResultRowDisplay label="Monthly EMI:" value={formatCurrency(monthlyPayment, currencySymbol)} isTotal />
       <ResultRowDisplay label="Total Interest Payable:" value={formatCurrency(totalInterest, currencySymbol)} textColorClass="text-red-400" />
       <ResultRowDisplay label="Total Amount Payable (Loan + Interest):" value={formatCurrency(totalPayment, currencySymbol)} isEmphasized textColorClass="text-orange-400" />
-
+      
       {loanAmount > 0 && totalInterest >= 0 && (
         <div className="mt-6 h-48 md:h-56">
           <Bar data={chartData} options={chartOptions} />

@@ -1,12 +1,30 @@
 // src/components/calculators/FdCalculator/FdOutput.jsx
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-// import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-// ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// ADD THESE IMPORTS AND REGISTRATION:
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+// END OF ADDED IMPORTS AND REGISTRATION
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -72,12 +90,11 @@ const FdOutput = ({ results, currencySymbol, depositAmount }) => {
   };
 
   return (
-    // Panel styling and main title removed. App.jsx handles them.
     <div className="space-y-5">
       <ResultRowDisplay label="Deposit Amount:" value={formatCurrency(depositAmount, currencySymbol)} textColorClass="text-blue-400" />
       <ResultRowDisplay label="Total Interest Earned:" value={formatCurrency(totalInterestEarned, currencySymbol)} textColorClass="text-green-400"/>
       <ResultRowDisplay label="Maturity Value:" value={formatCurrency(maturityValue, currencySymbol)} isTotal />
-
+      
       {depositAmount > 0 && totalInterestEarned >= 0 && (
         <div className="mt-6 h-48 md:h-56">
           <Bar data={chartData} options={chartOptions} />

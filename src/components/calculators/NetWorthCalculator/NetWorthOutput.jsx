@@ -1,12 +1,26 @@
 // src/components/calculators/NetWorthCalculator/NetWorthOutput.jsx
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
-// ChartJS.register(ArcElement, Tooltip, Legend, Title);
+// ADD THESE IMPORTS AND REGISTRATION:
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+} from 'chart.js';
+
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+);
+// END OF ADDED IMPORTS AND REGISTRATION
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -60,7 +74,7 @@ const NetWorthOutput = ({ results, currencySymbol }) => {
   const chartOptions = {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'top', labels: { color: '#F3F4F6' } }, // theme-text-primary
+      legend: { position: 'top', labels: { color: '#F3F4F6' } },
       title: { display: true, text: 'Assets vs. Liabilities', color: '#F3F4F6', font: { size: 16 } },
       tooltip: { callbacks: { label: function (context) { let label = context.label || ''; if (label) { label += ': '; } if (context.parsed !== null) { label += formatCurrency(context.parsed, currencySymbol); } return label; } } }
     },
@@ -71,9 +85,9 @@ const NetWorthOutput = ({ results, currencySymbol }) => {
       <ResultRowDisplay label="Total Assets:" value={formatCurrency(totalAssets, currencySymbol)} textColorClass="text-green-400" />
       <ResultRowDisplay label="Total Liabilities:" value={formatCurrency(totalLiabilities, currencySymbol)} textColorClass="text-red-400" />
       <ResultRowDisplay label="Your Estimated Net Worth:" value={formatCurrency(netWorth, currencySymbol)} isTotal textColorClass={netWorthColorClass} />
-
+      
       {(totalAssets > 0 || totalLiabilities > 0) && (
-        <div className="mt-6 h-64 md:h-72 flex justify-center">
+         <div className="mt-6 h-64 md:h-72 flex justify-center">
           <div style={{ width: '100%', maxWidth: '280px' }}>
             <Doughnut data={chartData} options={chartOptions} />
           </div>

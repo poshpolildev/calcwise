@@ -1,13 +1,14 @@
 // src/components/calculators/SimpleInterestCalculator/SimpleInterestOutput.jsx
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
+// Ensure ChartJS and necessary elements are registered if not done globally
 // import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -78,7 +79,7 @@ const SimpleInterestOutput = ({ results, currencySymbol, principalAmount }) => {
       <ResultRowDisplay label="Principal Amount:" value={formatCurrency(principalAmount, currencySymbol)} textColorClass="text-blue-400"/>
       <ResultRowDisplay label="Simple Interest Earned:" value={formatCurrency(simpleInterest, currencySymbol)} textColorClass="text-green-400" />
       <ResultRowDisplay label="Total Amount (Principal + Interest):" value={formatCurrency(totalAmount, currencySymbol)} isTotal />
-
+      
       {principalAmount > 0 && simpleInterest >= 0 && (
         <div className="mt-6 h-48 md:h-56">
           <Bar data={chartData} options={chartOptions} />

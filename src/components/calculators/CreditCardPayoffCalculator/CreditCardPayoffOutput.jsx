@@ -1,23 +1,37 @@
 // src/components/calculators/CreditCardPayoffCalculator/CreditCardPayoffOutput.jsx
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
-// ChartJS.register(ArcElement, Tooltip, Legend, Title);
+// ADD THESE IMPORTS AND REGISTRATION:
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+} from 'chart.js';
+
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+);
+// END OF ADDED IMPORTS AND REGISTRATION
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const formatMonthsToYearsMonths = (totalMonths) => {
-  if (totalMonths === undefined || totalMonths === null || isNaN(totalMonths) || !isFinite(totalMonths) || totalMonths <= 0) return "N/A";
+  if (totalMonths === undefined || totalMonths === null || isNaN(totalMonths) || !isFinite(totalMonths) || totalMonths < 0) return "N/A"; // Handle 0 months correctly
+  if (totalMonths === 0) return "0 months";
   const years = Math.floor(totalMonths / 12);
   const months = Math.round(totalMonths % 12);
   let result = "";
-  if (years > 0) result += `<span class="math-inline">\{years\} year</span>{years > 1 ? 's' : ''} `;
-  if (months > 0 || years === 0 && totalMonths === 0) result += `<span class="math-inline">\{months\} month</span>{months !== 1 ? 's' : ''}`;
-  else if (months > 0 || years === 0) result += `<span class="math-inline">\{months\} month</span>{months !== 1 ? 's' : ''}`;
-  return result.trim() || "0 months";
+  if (years > 0) result += `${years} year${years > 1 ? 's' : ''} `;
+  if (months > 0 || years === 0) result += `${months} month${months !== 1 ? 's' : ''}`;
+  return result.trim();
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -64,7 +78,7 @@ const CreditCardPayoffOutput = ({ results, currencySymbol, calcMode }) => {
     datasets: [
       {
         data: [Math.max(0,totalPrincipalPaid || 0), Math.max(0,totalInterestPaid || 0)],
-        backgroundColor: ['rgba(59, 130, 246, 0.7)', 'rgba(239, 68, 68, 0.6)'], // theme-accent, red
+        backgroundColor: ['rgba(59, 130, 246, 0.7)', 'rgba(239, 68, 68, 0.6)'],
         borderColor: ['rgba(59, 130, 246, 1)', 'rgba(239, 68, 68, 1)'],
         borderWidth: 1,
       },
@@ -73,7 +87,7 @@ const CreditCardPayoffOutput = ({ results, currencySymbol, calcMode }) => {
   const chartOptions = {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'top', labels: { color: '#F3F4F6' } }, // theme-text-primary
+      legend: { position: 'top', labels: { color: '#F3F4F6' } },
       title: { display: true, text: 'Payment Breakdown', color: '#F3F4F6', font: { size: 16 } },
       tooltip: { callbacks: { label: function(c) { let l = c.label || ''; if(l){l+=': ';} if(c.parsed !== null){l+=formatCurrency(c.parsed,currencySymbol);} return l;}}}
     },
@@ -85,11 +99,11 @@ const CreditCardPayoffOutput = ({ results, currencySymbol, calcMode }) => {
       <ResultRowDisplay label="Total Principal Paid:" value={formatCurrency(totalPrincipalPaid, currencySymbol)} textColorClass="text-blue-400" />
       <ResultRowDisplay label="Total Interest Paid:" value={formatCurrency(totalInterestPaid, currencySymbol)} textColorClass="text-red-400" />
       <ResultRowDisplay label="Total Amount Paid:" value={formatCurrency(totalPaid, currencySymbol)} isEmphasized textColorClass="text-orange-400"/>
-
+      
       {(totalPrincipalPaid > 0 || totalInterestPaid > 0) && (
-        <div className="mt-6 h-64 md:h-72 flex justify-center">
+         <div className="mt-6 h-64 md:h-72 flex justify-center">
           <div style={{ width: '100%', maxWidth: '280px' }}>
-            <Doughnut data={chartData} options={chartOptions} />
+             <Doughnut data={chartData} options={chartOptions} />
           </div>
         </div>
       )}

@@ -1,13 +1,30 @@
 // src/components/calculators/EmiCalculator/EmiCalculatorOutput.jsx
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-// Ensure ChartJS and necessary elements are registered if not done globally
-// import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-// ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// ADD THESE IMPORTS AND REGISTRATION:
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+// END OF ADDED IMPORTS AND REGISTRATION
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -62,7 +79,7 @@ const EmiCalculatorOutput = ({ results, currencySymbol, principal }) => {
 
  const chartOptions = {
     responsive: true, maintainAspectRatio: false, indexAxis: 'y',
-    scales: {
+    scales: { // This 'scales' configuration requires CategoryScale and LinearScale to be registered
       x: { stacked: true, ticks: { color: '#9CA3AF' }, grid: { color: '#374151' }, title: { display: true, text: `Amount (${currencySymbol})`, color: '#F3F4F6' } },
       y: { stacked: true, ticks: { color: '#9CA3AF' }, grid: { display: false } }
     },
@@ -74,7 +91,6 @@ const EmiCalculatorOutput = ({ results, currencySymbol, principal }) => {
   };
 
   return (
-    // Panel styling and main title removed. App.jsx handles them.
     <div className="space-y-5">
       <ResultRowDisplay label="Monthly EMI" value={formatCurrency(emi, currencySymbol)} isTotal />
       <ResultRowDisplay label="Total Interest Payable" value={formatCurrency(totalInterest, currencySymbol)} textColorClass="text-red-400" />

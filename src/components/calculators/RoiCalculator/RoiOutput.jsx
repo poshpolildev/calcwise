@@ -51,7 +51,7 @@ const RoiOutput = ({ results, currencySymbol }) => {
           label="Annualized ROI:"
           value={formatPercentage(annualizedRoiPercentage)}
           textColorClass={annualizedRoiPercentage >= 0 ? 'text-green-400' : 'text-red-400'}
-          isEmphasized // Make it stand out a bit
+          isEmphasized 
         />
       )}
       <div className="mt-4 p-3 bg-theme-input-bg rounded-md text-sm text-theme-text-secondary">

@@ -1,12 +1,26 @@
 // src/components/calculators/SavingsGoalCalculator/SavingsGoalOutput.jsx
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
-// ChartJS.register(ArcElement, Tooltip, Legend, Title);
+// ADD THESE IMPORTS AND REGISTRATION:
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+} from 'chart.js';
+
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+);
+// END OF ADDED IMPORTS AND REGISTRATION
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -22,14 +36,14 @@ const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized 
 
 const SavingsGoalOutput = ({ results, currencySymbol, savingsTarget }) => {
   if (!results) {
-    return (
+     return (
       <div className="text-center text-theme-text-secondary py-10">
         Enter details to calculate required savings.
       </div>
     );
   }
   if (results.error) {
-    return (
+     return (
       <div className="text-center text-red-400 py-10">
         Error: {results.error}
       </div>
@@ -39,7 +53,7 @@ const SavingsGoalOutput = ({ results, currencySymbol, savingsTarget }) => {
   const { monthlySavings, totalPrincipalSaved, totalInterestEarned, projectedFinalAmount } = results;
 
   const chartData = {
-    labels: ['Total Principal Contributed', 'Total Interest Earned'], // Updated labels for clarity
+    labels: ['Total Principal Contributed', 'Total Interest Earned'],
     datasets: [
       {
         data: [
@@ -69,22 +83,21 @@ const SavingsGoalOutput = ({ results, currencySymbol, savingsTarget }) => {
   };
 
   return (
-    // Panel styling and main title removed. App.jsx handles them.
     <div className="space-y-5">
       <ResultRowDisplay label="To Reach Your Goal of:" value={formatCurrency(savingsTarget, currencySymbol)} isEmphasized />
       <ResultRowDisplay label="You Need to Save Monthly:" value={formatCurrency(monthlySavings, currencySymbol)} isTotal />
       <ResultRowDisplay label="Total Principal You'll Contribute:" value={formatCurrency(totalPrincipalSaved, currencySymbol)} textColorClass="text-blue-400" />
       <ResultRowDisplay label="Total Interest You'll Earn:" value={formatCurrency(totalInterestEarned, currencySymbol)} textColorClass="text-green-400" />
       <ResultRowDisplay label="Projected Final Amount:" value={formatCurrency(projectedFinalAmount, currencySymbol)} textColorClass="text-gray-300" />
-
+      
       {(totalPrincipalSaved > 0 || totalInterestEarned > 0) && (
-        <div className="mt-6 h-64 md:h-72 flex justify-center">
+         <div className="mt-6 h-64 md:h-72 flex justify-center">
           <div style={{ width: '100%', maxWidth: '280px' }}>
             <Doughnut data={chartData} options={chartOptions} />
           </div>
         </div>
       )}
-      <div className="mt-4 p-3 bg-theme-input-bg rounded-md text-sm text-theme-text-secondary">
+       <div className="mt-4 p-3 bg-theme-input-bg rounded-md text-sm text-theme-text-secondary">
         <p>
           By saving {formatCurrency(monthlySavings, currencySymbol)} per month, you are projected to reach your savings goal.
           The final amount includes your contributions plus accumulated interest.

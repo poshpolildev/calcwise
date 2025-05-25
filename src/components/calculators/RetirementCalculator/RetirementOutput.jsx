@@ -1,12 +1,30 @@
 // src/components/calculators/RetirementCalculator/RetirementOutput.jsx
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-// import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-// ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// ADD THESE IMPORTS AND REGISTRATION:
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+// END OF ADDED IMPORTS AND REGISTRATION
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized, unit = '' }) => (
@@ -45,6 +63,7 @@ const RetirementOutput = ({ results, currencySymbol }) => {
   const isShortfall = shortfall > 0;
   const shortfallColor = isShortfall ? 'text-red-400' : 'text-green-400';
 
+  // Chart data logic as previously provided
   const chartData = {
     labels: ['Retirement Corpus'],
     datasets: [
@@ -58,18 +77,18 @@ const RetirementOutput = ({ results, currencySymbol }) => {
         label: 'FV from Add. Monthly Savings',
         data: [Math.max(0, projectedCorpusWithAdditionalSavings - fvOfCurrentSavings)],
         backgroundColor: 'rgba(16, 185, 129, 0.7)', // Green
-        stack: 'Projected', 
+        stack: 'Projected',
       }] : []),
        {
         label: 'Shortfall (if any)',
         data: [isShortfall ? Math.max(0, shortfall) : 0],
-        backgroundColor: 'rgba(239, 68, 68, 0.5)', // Light Red for shortfall indication
-        stack: 'Needed', 
+        backgroundColor: 'rgba(239, 68, 68, 0.5)', 
+        stack: 'Needed',
       },
-       { // This ensures the 'Corpus Needed' total height visually if no shortfall
-        label: !isShortfall ? 'Corpus Met/Exceeded' : ' ', // Avoid duplicate legend if surplus
+       { 
+        label: !isShortfall ? 'Corpus Met/Exceeded' : ' ', 
         data: [!isShortfall ? corpusNeeded : (corpusNeeded - Math.max(0,shortfall)) ],
-        backgroundColor: !isShortfall ? 'rgba(16, 185, 129, 0.3)' : 'rgba(0,0,0,0)', // Transparent if showing shortfall separately
+        backgroundColor: !isShortfall ? 'rgba(16, 185, 129, 0.3)' : 'rgba(0,0,0,0)', 
         stack: 'Needed',
       },
     ],
@@ -98,7 +117,7 @@ const RetirementOutput = ({ results, currencySymbol }) => {
       {isShortfall && requiredMonthlySavings > 0 && (
           <ResultRowDisplay label="Required Additional Monthly Savings:" value={formatCurrency(requiredMonthlySavings, currencySymbol)} isTotal/>
       )}
-      {projectedCorpusWithAdditionalSavings > 0 && (
+      {projectedCorpusWithAdditionalSavings > 0 && ( // Show if there are any projected savings
            <ResultRowDisplay label="Projected Corpus (with all savings):" value={formatCurrency(projectedCorpusWithAdditionalSavings, currencySymbol)} textColorClass="text-green-400"/>
       )}
       <div className="mt-6 h-72 md:h-80">

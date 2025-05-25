@@ -3,7 +3,7 @@ import React from 'react';
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -45,6 +45,7 @@ const LoanAffordabilityOutput = ({ results, currencySymbol, inputs }) => {
   const { affordableEmi, affordableLoanAmount, allowableTotalMonthlyDebt } = results;
 
   return (
+    // Panel styling and main title removed. App.jsx handles them.
     <div className="space-y-5">
       {inputs && (
           <ResultRowDisplay label="Based on DTI of:" value={`${inputs.desiredDtiRatio}%`} textColorClass="text-gray-300" />
@@ -52,7 +53,7 @@ const LoanAffordabilityOutput = ({ results, currencySymbol, inputs }) => {
       <ResultRowDisplay label="Allowable Total Monthly Debt:" value={formatCurrency(allowableTotalMonthlyDebt, currencySymbol)} textColorClass="text-gray-300" />
       <ResultRowDisplay label="Max. Affordable EMI for New Loan:" value={formatCurrency(affordableEmi, currencySymbol)} isEmphasized />
       <ResultRowDisplay label="Estimated Affordable Loan Amount:" value={formatCurrency(affordableLoanAmount, currencySymbol)} isTotal />
-
+      
       <div className="mt-4 p-3 bg-theme-input-bg rounded-md text-sm text-theme-text-secondary">
         <p className="font-semibold text-theme-text-primary">Disclaimer:</p>
         <p>This is an estimate. Actual loan amount depends on lender policies, credit score, and other factors.

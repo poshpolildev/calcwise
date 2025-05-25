@@ -3,7 +3,7 @@ import React from 'react';
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
-  return `<span class="math-inline">\{currencySymbol \|\| ''\}</span>{amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 const ResultRowDisplay = ({ label, value, isTotal, textColorClass, isEmphasized }) => (
@@ -57,8 +57,8 @@ const InflationOutput = ({ results, currencySymbol, calculationType, originalAmo
     // Panel styling and main title removed. App.jsx handles them.
     <div className="space-y-5">
       <ResultRowDisplay label={resultLabel} value={formatCurrency(resultValue, currencySymbol)} isTotal />
-
-      <div className="mt-4 p-3 bg-theme-input-bg rounded-md text-sm text-theme-text-secondary"> {/* Changed background for contrast */}
+      
+      <div className="mt-4 p-3 bg-theme-input-bg rounded-md text-sm text-theme-text-secondary">
         <p className="font-semibold mb-1 text-theme-text-primary">Summary:</p>
         <p>{explanation}</p>
       </div>

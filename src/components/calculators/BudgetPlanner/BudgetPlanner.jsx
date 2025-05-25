@@ -2,18 +2,31 @@
 import React, { useState, useEffect } from 'react';
 import { FiPlusCircle, FiTrash2 } from 'react-icons/fi';
 import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
-// CurrencySelector is expected to be passed from App.jsx, or if you want one specific to this planner, uncomment the import
-// import CurrencySelector from '../../common/CurrencySelector';
+// ADD THESE IMPORTS AND REGISTRATION:
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+} from 'chart.js';
 
-ChartJS.register(ArcElement, Tooltip, Legend, Title);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+);
+// END OF ADDED IMPORTS AND REGISTRATION
+
+// CurrencySelector is passed as a prop from App.jsx, so no need to import here unless used independently
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
   return `${currencySymbol || ''}${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
-const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume selectedCurrency and setSelectedCurrency are passed from App.jsx
+const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => {
   const [incomeItems, setIncomeItems] = useState([]);
   const [expenseItems, setExpenseItems] = useState([]);
 
@@ -22,23 +35,21 @@ const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume
 
   const [newExpenseName, setNewExpenseName] = useState('');
   const [newExpenseAmount, setNewExpenseAmount] = useState('');
-  const [selectedExpenseCategory, setSelectedExpenseCategory] = useState('Housing'); // Default category
+  const [selectedExpenseCategory, setSelectedExpenseCategory] = useState('Housing');
 
   const expenseCategories = ['Housing', 'Food', 'Transport', 'Utilities', 'Entertainment', 'Healthcare', 'Personal Care', 'Education', 'Debt Payments', 'Savings/Investments', 'Gifts/Donations', 'Other'];
 
-  // Load data from localStorage on component mount
   useEffect(() => {
     const storedIncome = localStorage.getItem('budgetPlannerIncome');
     if (storedIncome) {
-      setIncomeItems(JSON.parse(storedIncome));
+      try { setIncomeItems(JSON.parse(storedIncome)); } catch (e) { console.error("Error parsing stored income", e); }
     }
     const storedExpenses = localStorage.getItem('budgetPlannerExpenses');
     if (storedExpenses) {
-      setExpenseItems(JSON.parse(storedExpenses));
+      try { setExpenseItems(JSON.parse(storedExpenses)); } catch (e) { console.error("Error parsing stored expenses", e); }
     }
   }, []);
 
-  // Save data to localStorage whenever items change
   useEffect(() => {
     localStorage.setItem('budgetPlannerIncome', JSON.stringify(incomeItems));
   }, [incomeItems]);
@@ -47,9 +58,8 @@ const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume
     localStorage.setItem('budgetPlannerExpenses', JSON.stringify(expenseItems));
   }, [expenseItems]);
 
-
   const addIncomeItem = (e) => {
-    e.preventDefault(); // Prevent form submission if it's in a form
+    e.preventDefault();
     if (newIncomeSource && newIncomeAmount && parseFloat(newIncomeAmount) > 0) {
       setIncomeItems([...incomeItems, { id: Date.now(), source: newIncomeSource, amount: parseFloat(newIncomeAmount) }]);
       setNewIncomeSource('');
@@ -58,12 +68,11 @@ const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume
   };
 
   const addExpenseItem = (e) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     if (newExpenseName && newExpenseAmount && parseFloat(newExpenseAmount) > 0 && selectedExpenseCategory) {
       setExpenseItems([...expenseItems, { id: Date.now(), category: selectedExpenseCategory, name: newExpenseName, amount: parseFloat(newExpenseAmount) }]);
       setNewExpenseName('');
       setNewExpenseAmount('');
-      // Optionally reset category or keep for next entry: setSelectedExpenseCategory('Housing');
     }
   };
 
@@ -78,7 +87,7 @@ const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume
     const categoryTotal = expenseItems
       .filter(item => item.category === category)
       .reduce((sum, item) => sum + item.amount, 0);
-    if (categoryTotal > 0) { // Only include categories with expenses
+    if (categoryTotal > 0) {
         acc[category] = categoryTotal;
     }
     return acc;
@@ -90,7 +99,7 @@ const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume
   const doughnutChartData = {
     labels: chartLabels.length > 0 ? chartLabels : ['No Expenses Yet'],
     datasets: [{
-      data: chartDataValues.length > 0 ? chartDataValues : [1], // Placeholder data if empty
+      data: chartDataValues.length > 0 ? chartDataValues : [1],
       backgroundColor: chartLabels.length > 0 ? [
         'rgba(255, 99, 132, 0.8)', 'rgba(54, 162, 235, 0.8)', 'rgba(255, 206, 86, 0.8)',
         'rgba(75, 192, 192, 0.8)', 'rgba(153, 102, 255, 0.8)', 'rgba(255, 159, 64, 0.8)',
@@ -110,8 +119,8 @@ const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume
    const doughnutChartOptions = {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'right', labels: { color: '#D1D5DB', boxWidth: 15, padding:15 } }, // theme-text-secondary or primary
-      title: { display: true, text: 'Expense Distribution', color: '#F3F4F6', font: { size: 16 } }, // theme-text-primary
+      legend: { position: 'right', labels: { color: '#D1D5DB', boxWidth: 15, padding:15 } },
+      title: { display: true, text: 'Expense Distribution', color: '#F3F4F6', font: { size: 16 } },
       tooltip: { callbacks: { label: function(c) { let l = c.label || ''; if(l){l+=': ';} if(c.parsed !== null){l+=formatCurrency(c.parsed,selectedCurrency?.symbol || '');} return l;}}}
     },
   };
@@ -122,22 +131,22 @@ const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume
   const deleteButtonStyle = "text-red-400 hover:text-red-300 transition-colors";
 
   return (
-    // This root div no longer has the main panel styling (bg-theme-panel-dark, p-6, etc.)
-    // App.jsx provides that wrapper.
+    // This root div no longer has the outer panel styling or main H2 title.
+    // App.jsx provides the main panel wrapper via its renderCalculator function.
     <div className="text-theme-text-primary space-y-8">
       {/* Income Section */}
       <section className="p-4 bg-theme-input-bg/30 rounded-lg shadow-md">
         <h3 className="text-xl font-semibold text-green-400 mb-4">Income Sources</h3>
-        <form onSubmit={addIncomeItem} className="flex gap-2 items-end mb-4">
-          <div className="flex-grow">
+        <form onSubmit={addIncomeItem} className="flex flex-col sm:flex-row gap-2 items-end mb-4">
+          <div className="flex-grow w-full sm:w-auto">
             <label htmlFor="newIncomeSource" className="sr-only">Income Source</label>
             <input id="newIncomeSource" type="text" value={newIncomeSource} onChange={e => setNewIncomeSource(e.target.value)} placeholder="Source (e.g., Salary)" className={`${inputStyle} w-full`} />
           </div>
-          <div className="flex-grow">
+          <div className="flex-grow w-full sm:w-auto">
             <label htmlFor="newIncomeAmount" className="sr-only">Amount</label>
             <input id="newIncomeAmount" type="number" value={newIncomeAmount} onChange={e => setNewIncomeAmount(e.target.value)} placeholder="Amount" className={`${inputStyle} w-full`} />
           </div>
-          <button type="submit" className={buttonStyle} aria-label="Add Income"><FiPlusCircle size={20}/></button>
+          <button type="submit" className={`${buttonStyle} w-full sm:w-auto`} aria-label="Add Income"><FiPlusCircle size={20}/><span className="ml-2 sm:hidden md:inline">Add</span></button>
         </form>
         <div className="max-h-60 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-700">
           {incomeItems.length === 0 && <p className="text-sm text-theme-text-secondary text-center py-2">No income sources added yet.</p>}
@@ -157,21 +166,21 @@ const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume
       <section className="p-4 bg-theme-input-bg/30 rounded-lg shadow-md">
         <h3 className="text-xl font-semibold text-red-400 mb-4">Expenses</h3>
         <form onSubmit={addExpenseItem} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 items-end mb-4">
-          <div className="md:col-span-1">
+          <div className="w-full md:col-span-1">
             <label htmlFor="selectedExpenseCategory" className="sr-only">Category</label>
             <select id="selectedExpenseCategory" value={selectedExpenseCategory} onChange={e => setSelectedExpenseCategory(e.target.value)} className={`${inputStyle} w-full`}>
               {expenseCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
             </select>
           </div>
-          <div className="md:col-span-1">
+          <div className="w-full md:col-span-1">
             <label htmlFor="newExpenseName" className="sr-only">Expense Name</label>
             <input id="newExpenseName" type="text" value={newExpenseName} onChange={e => setNewExpenseName(e.target.value)} placeholder="Expense (e.g., Rent)" className={`${inputStyle} w-full`} />
           </div>
-          <div className="md:col-span-1">
+          <div className="w-full md:col-span-1">
             <label htmlFor="newExpenseAmount" className="sr-only">Amount</label>
             <input id="newExpenseAmount" type="number" value={newExpenseAmount} onChange={e => setNewExpenseAmount(e.target.value)} placeholder="Amount" className={`${inputStyle} w-full`} />
           </div>
-          <button type="submit" className={`${buttonStyle} md:col-span-1`} aria-label="Add Expense"><FiPlusCircle size={20}/></button>
+          <button type="submit" className={`${buttonStyle} w-full md:col-span-1`} aria-label="Add Expense"><FiPlusCircle size={20}/><span className="ml-2 sm:hidden md:inline">Add</span></button>
         </form>
         <div className="max-h-60 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-700">
           {expenseItems.length === 0 && <p className="text-sm text-theme-text-secondary text-center py-2">No expenses added yet.</p>}
@@ -204,9 +213,9 @@ const BudgetPlanner = ({ selectedCurrency, setSelectedCurrency }) => { // Assume
                 <p className={`text-2xl font-bold ${balance >= 0 ? 'text-green-400' : 'text-red-400'}`}>{formatCurrency(balance, selectedCurrency?.symbol)}</p>
             </div>
         </div>
-        {(incomeItems.length > 0 || expenseItems.length > 0) && chartLabels.length > 0 && ( // Only show chart if there are expenses to show
+        {(incomeItems.length > 0 || expenseItems.length > 0) && chartLabels.length > 0 && (
             <div className="mt-8 h-72 md:h-80 flex justify-center">
-                 <div style={{ position: 'relative', height: '100%', width: '100%', maxWidth: '350px' }}> {/* Ensure chart respects container */}
+                 <div style={{ position: 'relative', height: '100%', width: '100%', maxWidth: '350px' }}>
                     <Doughnut data={doughnutChartData} options={doughnutChartOptions} />
                 </div>
             </div>
