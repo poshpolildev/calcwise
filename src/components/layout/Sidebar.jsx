@@ -48,7 +48,7 @@ const Sidebar = ({ onSelectTool, isOpen, setIsOpen }) => {
     <>
       <button
         type="button"
-        className="md:hidden fixed top-2 left-5 z-50 p-2 bg-theme-panel-dark rounded-md text-theme-text-primary hover:bg-theme-border"
+        className="md:hidden fixed top-3 left-5 z-50 p-2 bg-theme-panel-dark rounded-md text-theme-text-primary hover:bg-theme-border"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
