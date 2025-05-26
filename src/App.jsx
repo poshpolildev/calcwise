@@ -1,7 +1,7 @@
 // src/App.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { Routes, Route, useParams, useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async'; // HelmetProvider is in index.js
+import { Helmet } from 'react-helmet-async';
 import Header from './components/layout/Header';
 import Sidebar from './components/layout/Sidebar';
 import Footer from './components/layout/Footer';
@@ -10,11 +10,12 @@ import CalculatorInfoBox from './components/common/CalculatorInfoBox';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { allTools } from './data/allTools';
-import { currencies, defaultCurrency } from './data/currencies';
+import { currencies, defaultCurrency } from './data/currencies'; // defaultCurrency is now BDT
 
 // --- Import ALL your calculator components ---
 import EmiCalculatorInput from './components/calculators/EmiCalculator/EmiCalculatorInput';
 import EmiCalculatorOutput from './components/calculators/EmiCalculator/EmiCalculatorOutput';
+// ... (Import ALL other calculator Input and Output components you have created) ...
 import SimpleInterestInput from './components/calculators/SimpleInterestCalculator/SimpleInterestInput';
 import SimpleInterestOutput from './components/calculators/SimpleInterestCalculator/SimpleInterestOutput';
 import CompoundInterestInput from './components/calculators/CompoundInterestCalculator/CompoundInterestInput';
@@ -49,6 +50,7 @@ import MortgageInput from './components/calculators/MortgageCalculator/MortgageI
 import MortgageOutput from './components/calculators/MortgageCalculator/MortgageOutput';
 import BudgetPlanner from './components/calculators/BudgetPlanner/BudgetPlanner';
 
+
 // --- Import ALL your calculator logic functions ---
 import { calculateEMI } from './components/calculators/EmiCalculator/emiLogic';
 import { calculateSimpleInterest } from './components/calculators/SimpleInterestCalculator/simpleInterestLogic';
@@ -68,27 +70,31 @@ import { calculateTimeToPayOff, calculateMonthlyPaymentForPayoff } from './compo
 import { generateAmortizationSchedule } from './components/calculators/AmortizationCalculator/amortizationLogic';
 import { calculateMortgageEmi } from './components/calculators/MortgageCalculator/mortgageLogic';
 
-// Helper function defined OUTSIDE the App component
+
 const getCurrentToolIdFromPath = (pathname) => {
   const match = pathname.match(/^\/calculator\/([^/]+)/);
   return match ? match[1] : null;
 };
 
-// This component will render the specific calculator based on URL parameter
 const CalculatorDisplay = ({ allCalculatorStates, allCalculatorHandlers, selectedCurrency, setSelectedCurrency }) => {
   const { toolId } = useParams();
   const currentToolDetails = allTools.find(tool => tool.id === toolId);
 
   if (!currentToolDetails) {
-    return <div className="text-center text-theme-text-secondary p-8">Calculator "{toolId}" not found. Please select a tool from the sidebar.</div>;
+    return <div className="text-center text-theme-text-secondary p-8">Calculator "{toolId}" not found.</div>;
   }
 
   const toolStates = allCalculatorStates[toolId] || {};
   const toolHandlers = allCalculatorHandlers[toolId] || {};
 
+  if (!toolHandlers || typeof toolHandlers.calculate !== 'function') {
+    return <div className="text-center text-theme-text-secondary p-8">Calculator "{currentToolDetails.name}" logic is not configured.</div>;
+  }
+
   let calculatorInputComponent;
   let calculatorOutputComponent;
 
+  // --- ENSURE ALL YOUR CALCULATOR IDs ARE HANDLED IN THIS SWITCH ---
   switch (toolId) {
     case 'emi':
       calculatorInputComponent = <EmiCalculatorInput onCalculate={toolHandlers.calculate} selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency} />;
@@ -158,7 +164,7 @@ const CalculatorDisplay = ({ allCalculatorStates, allCalculatorHandlers, selecte
         calculatorInputComponent = <MortgageInput onCalculate={toolHandlers.calculate} selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency} />;
         calculatorOutputComponent = <MortgageOutput results={toolStates.results} currencySymbol={selectedCurrency?.symbol} />;
         break;
-    // Note: BudgetPlanner is handled by a separate route element structure below
+    // BudgetPlanner is handled by its own Route path="calculator/budgetPlanner"
     default:
         return (
             <motion.div key="unknown-calc-display" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-theme-text-secondary p-8">
@@ -174,7 +180,6 @@ const CalculatorDisplay = ({ allCalculatorStates, allCalculatorHandlers, selecte
           key={toolId}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.4, delay: 0.1 }}
           className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start"
         >
@@ -189,23 +194,21 @@ const CalculatorDisplay = ({ allCalculatorStates, allCalculatorHandlers, selecte
     );
 };
 
-// Layout component that includes Header, Sidebar, Footer
 const MainLayout = ({ onSelectTool, isSidebarOpen, setIsSidebarOpen, onHomeClick }) => (
-  <div className="flex flex-col min-h-screen bg-theme-bg-dark">
-    <Header onHomeClick={onHomeClick} />
-    <div className={`flex flex-1 pt-16 md:pt-20 pb-16 md:pb-12 ${isSidebarOpen ? 'md:pl-64 lg:pl-72' : 'md:pl-0'} transition-all duration-300 ease-in-out`}>
-      <Sidebar onSelectTool={onSelectTool} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      <main className="flex-grow p-4 sm:p-6 md:p-8 overflow-y-auto">
-        <AnimatePresence mode="wait">
-          <Outlet /> {/* Child routes (HomeMessage or CalculatorDisplay/BudgetPlannerPage) will render here */}
-        </AnimatePresence>
-      </main>
+    <div className="flex flex-col min-h-screen bg-theme-bg-dark">
+        <Header onHomeClick={onHomeClick} />
+        <div className={`flex flex-1 pt-16 md:pt-20 pb-16 md:pb-12 ${isSidebarOpen ? 'md:pl-64 lg:pl-72' : 'md:pl-0'} transition-all duration-300 ease-in-out`}>
+            <Sidebar onSelectTool={onSelectTool} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+            <main className="flex-grow p-4 sm:p-6 md:p-8 overflow-y-auto">
+                <AnimatePresence mode="wait">
+                    <Outlet />
+                </AnimatePresence>
+            </main>
+        </div>
+        <Footer />
     </div>
-    <Footer />
-  </div>
 );
 
-// Separate component for BudgetPlanner route to include CalculatorInfoBox
 const BudgetPlannerPage = ({selectedCurrency, setSelectedCurrency}) => {
     const budgetPlannerToolDetails = allTools.find(tool => tool.id === 'budgetPlanner');
     return (
@@ -218,14 +221,12 @@ const BudgetPlannerPage = ({selectedCurrency, setSelectedCurrency}) => {
     );
 };
 
-
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // --- DEFINE these constants at the top of the App function scope ---
   const siteName = "Calc Wise";
-  const baseCanonicalUrl = "https://calcwise.vercel.app"; // Replace with your actual domain later
+  const baseCanonicalUrl = "https://calcwise.vercel.app"; // CHANGE TO poshpo.me WHEN READY
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 768);
 
@@ -258,7 +259,7 @@ function App() {
   const [mortgageResults, setMortgageResults] = useState(null);
 
   const storedCurrencyValue = localStorage.getItem('calcwise-currency');
-  const initialCurrency = currencies.find(c => c.value === storedCurrencyValue) || defaultCurrency;
+  const initialCurrency = currencies.find(c => c.value === storedCurrencyValue) || defaultCurrency; // defaultCurrency is BDT
   const [selectedCurrency, setSelectedCurrency] = useState(initialCurrency);
 
   useEffect(() => {
@@ -287,20 +288,14 @@ function App() {
     setMortgageResults(null);
   };
 
-  // Update page based on URL, and reset states when tool changes via URL
   useEffect(() => {
     const toolIdFromPath = getCurrentToolIdFromPath(location.pathname);
-    // Only reset states if the toolId derived from path is different from a conceptual previous one,
-    // or if navigating away from a tool page. For simplicity, we reset if toolIdFromPath exists.
     if (toolIdFromPath) {
         resetAllCalculatorStates();
     }
   }, [location.pathname]);
 
-
   const handleSelectTool = (toolId) => {
-    // No need to call resetAllCalculatorStates() here,
-    // the useEffect above listening to location.pathname will handle it after navigation.
     navigate(`/calculator/${toolId}`);
     if (window.innerWidth < 768 && isSidebarOpen) {
       setIsSidebarOpen(false);
@@ -308,11 +303,9 @@ function App() {
   };
 
   const handleHomeClick = () => {
-    // No need to call resetAllCalculatorStates() here for the same reason.
     navigate('/');
   };
 
-  // --- Group calculator states and handlers ---
   const allCalculatorStates = useMemo(() => ({
     emi: { results: emiResults, inputs: emiInputs },
     simpleInterest: { results: simpleInterestResults, inputs: simpleInterestInputs },
@@ -331,7 +324,7 @@ function App() {
     creditCard: {results: creditCardPayoffResults, inputs: creditCardPayoffInputs},
     loanRepayment: {results: amortizationResults},
     mortgage: {results: mortgageResults},
-  }), [ // Add all state dependencies
+  }), [ 
     emiResults, emiInputs, simpleInterestResults, simpleInterestInputs, compoundInterestResults, compoundInterestInputs,
     sipResults, fdResults, fdInputs, rdResults, inflationResults, inflationInputs, roiResults, breakEvenResults,
     savingsGoalResults, savingsGoalInputs, loanAffordabilityResults, loanAffordabilityInputs, netWorthResults,
@@ -340,7 +333,7 @@ function App() {
   ]);
 
   const allCalculatorHandlers = useMemo(() => ({
-    emi: { calculate: (inputs) => { setEmiResults(calculateEMI(inputs.principal, inputs.annualRate, inputs.tenureYears)); setEmiInputs(inputs); } },
+    emi: { calculate: (inputs) => { setEmiResults(calculateEMI(inputs.principal, inputs.annualRate, inputs.tenureMonths, inputs.disbursementDate)); setEmiInputs(inputs); } },
     simpleInterest: { calculate: (inputs) => { setSimpleInterestResults(calculateSimpleInterest(inputs.principal, inputs.annualRate, inputs.tenureYears)); setSimpleInterestInputs(inputs); } },
     compoundInterest: { calculate: (inputs) => { setCompoundInterestResults(calculateCompoundInterest(inputs.principal, inputs.annualRate, inputs.tenureYears, inputs.compoundingFrequency)); setCompoundInterestInputs(inputs); }},
     sip: { calculate: (inputs) => setSipResults(calculateSip(inputs.monthlyInvestment, inputs.annualRate, inputs.tenureYears))},
@@ -367,40 +360,45 @@ function App() {
     }},
     loanRepayment: { calculate: (inputs) => setAmortizationResults(generateAmortizationSchedule(inputs.principal, inputs.annualRate, inputs.tenureYears))},
     mortgage: { calculate: (inputs) => setMortgageResults(calculateMortgageEmi(inputs.homePrice, inputs.downPayment, inputs.annualRate, inputs.tenureYears))},
-  }), [
-      // Empty dependency array for handlers if they only call setters from useState and imported logic functions.
-      // If a handler uses other App-level state for its logic (not just for setting results), add that state here.
-  ]);
+  }), [ /* Keep this dependency array minimal if handlers only call setters */ ]);
 
-  // SEO: Dynamic Title, Description based on current route
   const toolIdFromPath = getCurrentToolIdFromPath(location.pathname);
   const currentRouteToolDetails = allTools.find(tool => tool.id === toolIdFromPath);
 
-  let pageTitle = `${siteName} - Free Financial Calculators & Planning Tools`;
-  let pageDescription = "Calc Wise offers a comprehensive suite of free online financial calculators for EMI, mortgage, investment returns (ROI), SIP, retirement planning, net worth, and more. Make smart financial decisions with easy-to-use tools.";
+  let pageTitle = `${siteName} - Free Financial Calculators Bangladesh`;
+  let pageDescription = `Calc Wise offers free online financial calculators for loans, investments, retirement, and budgeting in Bangladesh. Calculate EMI, SIP, ROI, and more in BDT.`;
   let canonicalUrl = baseCanonicalUrl;
 
   if (currentRouteToolDetails) {
     pageTitle = `${currentRouteToolDetails.name} | ${siteName}`;
-    let metaDesc = currentRouteToolDetails.explanation || `Use our free ${currentRouteToolDetails.name.toLowerCase()} to plan your finances with ${siteName}. Accurate and easy to use.`;
+    let metaDesc = currentRouteToolDetails.explanation || `Use our free ${currentRouteToolDetails.name.toLowerCase()} for your financial calculations in Bangladesh.`;
     if (metaDesc.length > 160) {
-      metaDesc = metaDesc.substring(0, 157) + "...";
+      const firstSentence = metaDesc.split('.')[0] + '.';
+      metaDesc = firstSentence.length <= 160 ? firstSentence : metaDesc.substring(0, 157) + "...";
     }
     pageDescription = metaDesc;
     canonicalUrl = `${baseCanonicalUrl}/calculator/${currentRouteToolDetails.id}`;
   } else if (location.pathname === '/') {
-    pageTitle = `Welcome to ${siteName} - Your Smart Financial Toolkit`;
-    pageDescription = `Discover a wide range of financial calculators on ${siteName} to help you manage loans, investments, savings, and more. Start planning your financial future today.`;
+    pageTitle = `Calc Wise - Financial Planning Tools for Bangladesh`;
+    pageDescription = `Your comprehensive suite of free financial calculators for Bangladesh. Plan your EMI, investments, savings, and budget with Calc Wise. Default currency BDT.`;
     canonicalUrl = baseCanonicalUrl;
   }
 
-
   return (
-    <> {/* Fragment because HelmetProvider is in index.js */}
+    <>
       <Helmet>
+        <html lang="en-BD" />
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:site_name" content={siteName} />
+        <meta property="og:locale" content="en_BD" />
+        {/* <meta property="og:image" content={`${baseCanonicalUrl}/your-site-preview-image.png`} /> */}
+        <meta property="og:type" content={currentRouteToolDetails ? "article" : "website"} />
+        {currentRouteToolDetails && <meta property="article:section" content="Financial Calculators" />}
       </Helmet>
       <Routes>
         <Route 
@@ -416,7 +414,7 @@ function App() {
         >
           <Route index element={<HomeMessage key="home" />} />
           <Route 
-            path="calculator/budgetPlanner" // Specific route for BudgetPlanner
+            path="calculator/budgetPlanner"
             element={
               <BudgetPlannerPage
                 selectedCurrency={selectedCurrency}

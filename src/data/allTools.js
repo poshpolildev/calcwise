@@ -1,8 +1,9 @@
+// src/data/allTools.js
 export const allTools = [
   {
     id: 'emi',
-    name: 'EMI Calculator',
-    explanation: 'Calculates the Equated Monthly Installment (EMI) for a loan. Enter the loan amount, interest rate, and tenure to understand your monthly repayment obligations for home, car, or personal loans.'
+    name: 'Loan Calculator (EMI) Bangladesh',
+    explanation: 'Calculate your Equated Monthly Installment (EMI) for home, car, or personal loans in Bangladesh. Enter loan amount in BDT, interest rate, disbursement date, and tenure in months to accurately plan your finances. Our free loan calculator provides a quick estimate of your monthly payments, total interest, and a complete repayment schedule overview. Essential for prospective borrowers in Bangladesh.'
   },
   {
     id: 'loanAffordability',
@@ -76,7 +77,7 @@ export const allTools = [
   },
   {
     id: 'budgetPlanner',
-    name: 'Budget Planner', // Name updated
+    name: 'Budget Planner',
     explanation: 'An interactive tool to help you track your monthly income sources and categorize your expenses to understand your cash flow and identify areas for savings.'
   },
   {
@@ -89,15 +90,5 @@ export const allTools = [
     name: 'Break-Even Point Calculator',
     explanation: 'For businesses: determine the sales volume (in units or revenue) at which total revenues equal total costs, meaning the point where the business neither makes a profit nor a loss.'
   }
-  // Add 'carLoan' and 'personalLoan' if you decide to keep them, reusing EMI logic
-  // {
-  //   id: 'carLoan',
-  //   name: 'Car Loan Calculator',
-  //   explanation: 'Calculates the Equated Monthly Installment (EMI) for a car loan. Plan your vehicle purchase by understanding your monthly repayment.'
-  // },
-  // {
-  //   id: 'personalLoan',
-  //   name: 'Personal Loan Calculator',
-  //   explanation: 'Determine your Equated Monthly Installment (EMI) for a personal loan based on loan amount, interest rate, and repayment tenure.'
-  // }
+  // Ensure 'carLoan' and 'personalLoan' are here with explanations if you kept them.
 ];

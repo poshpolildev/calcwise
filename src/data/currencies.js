@@ -28,4 +28,4 @@ export const currencies = [
 ];
 
 // Ensure defaultCurrency is still valid. For example, to keep USD as default:
-export const defaultCurrency = currencies.find(c => c.value === 'USD') || currencies[0];
+export const defaultCurrency = currencies.find(c => c.value === 'BDT') || currencies[0];

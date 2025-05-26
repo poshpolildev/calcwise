@@ -1,26 +1,11 @@
 // src/components/calculators/EmiCalculator/EmiCalculatorOutput.jsx
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-// ADD THESE IMPORTS AND REGISTRATION:
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
+  Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-// END OF ADDED IMPORTS AND REGISTRATION
+ChartJS.register( CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend );
 
 const formatCurrency = (amount, currencySymbol) => {
   if (amount === undefined || amount === null || isNaN(amount)) return `${currencySymbol || ''}0.00`;
@@ -63,14 +48,14 @@ const EmiCalculatorOutput = ({ results, currencySymbol, principal }) => {
       {
         label: 'Principal Loan Amount',
         data: [principal],
-        backgroundColor: 'rgba(59, 130, 246, 0.7)', // theme-accent
+        backgroundColor: 'rgba(59, 130, 246, 0.7)',
         borderColor: 'rgba(59, 130, 246, 1)',
         borderWidth: 1,
       },
       {
         label: 'Total Interest Paid',
         data: [totalInterest],
-        backgroundColor: 'rgba(239, 68, 68, 0.6)', // A red color
+        backgroundColor: 'rgba(239, 68, 68, 0.6)',
         borderColor: 'rgba(239, 68, 68, 1)',
         borderWidth: 1,
       },
@@ -79,7 +64,7 @@ const EmiCalculatorOutput = ({ results, currencySymbol, principal }) => {
 
  const chartOptions = {
     responsive: true, maintainAspectRatio: false, indexAxis: 'y',
-    scales: { // This 'scales' configuration requires CategoryScale and LinearScale to be registered
+    scales: {
       x: { stacked: true, ticks: { color: '#9CA3AF' }, grid: { color: '#374151' }, title: { display: true, text: `Amount (${currencySymbol})`, color: '#F3F4F6' } },
       y: { stacked: true, ticks: { color: '#9CA3AF' }, grid: { display: false } }
     },
@@ -92,15 +77,18 @@ const EmiCalculatorOutput = ({ results, currencySymbol, principal }) => {
 
   return (
     <div className="space-y-5">
-      <ResultRowDisplay label="Monthly EMI" value={formatCurrency(emi, currencySymbol)} isTotal />
-      <ResultRowDisplay label="Total Interest Payable" value={formatCurrency(totalInterest, currencySymbol)} textColorClass="text-red-400" />
-      <ResultRowDisplay label="Total Amount Payable" value={formatCurrency(totalPayable, currencySymbol)} isEmphasized />
+      <ResultRowDisplay label="Monthly EMI:" value={formatCurrency(emi, currencySymbol)} isTotal />
+      <ResultRowDisplay label="Total Interest Payable:" value={formatCurrency(totalInterest, currencySymbol)} textColorClass="text-red-400" />
+      <ResultRowDisplay label="Total Amount Payable:" value={formatCurrency(totalPayable, currencySymbol)} isEmphasized />
 
       {principal > 0 && totalInterest >= 0 && (
         <div className="mt-6 h-48 md:h-56">
           <Bar data={chartData} options={chartOptions} />
         </div>
       )}
+       <div className="mt-4 p-3 bg-theme-input-bg rounded-md text-sm text-theme-text-secondary">
+        <p><strong>Disclaimer:</strong> EMI Amount calculated here may vary marginally from the actual EMI from loan disbursement depending on different EMI dates and bank policies. This calculator is for estimation purposes for users in Bangladesh and elsewhere.</p>
+      </div>
     </div>
   );
 };

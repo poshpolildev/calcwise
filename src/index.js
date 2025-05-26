@@ -1,19 +1,20 @@
-// src/index.js (or src/main.jsx if using Vite)
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css';
+import './index.css'; // Your Tailwind CSS
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter
+import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <HelmetProvider>
-      <BrowserRouter> {/* Wrap App with BrowserRouter */}
+      <BrowserRouter>
         <App />
       </BrowserRouter>
     </HelmetProvider>
   </React.StrictMode>
 );
+
 

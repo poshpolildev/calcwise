@@ -1,9 +1,10 @@
+// src/components/common/CalculatorInfoBox.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 
 const CalculatorInfoBox = ({ toolName, explanation }) => {
   if (!toolName || !explanation) {
-    return null; // Don't render if essential info is missing
+    return null; 
   }
 
   return (
@@ -11,7 +12,7 @@ const CalculatorInfoBox = ({ toolName, explanation }) => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="mb-8 p-6 bg-theme-panel-dark border border-theme-border rounded-xl shadow-xl text-center"
+      className="mb-8 p-6 bg-theme-panel-dark border border-theme-border rounded-xl shadow-xl text-center" // Ensure theme classes are in tailwind.config.js
     >
       <h2 className="text-3xl lg:text-4xl font-semibold text-theme-text-primary mb-3">
         {toolName}
