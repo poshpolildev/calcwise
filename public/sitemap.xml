@@ -2,109 +2,109 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://calcwise.vercel.app/</loc>
+    <loc>https://calcwise.me/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
 
   <url>
-    <loc>https://calcwise.vercel.app/calculator/emi</loc>
+    <loc>https://calcwise.me/calculator/emi</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/loanAffordability</loc>
+    <loc>https://calcwise.me/calculator/loanAffordability</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/loanRepayment</loc>
+    <loc>https://calcwise.me/calculator/loanRepayment</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/interestRate</loc>
+    <loc>https://calcwise.me/calculator/interestRate</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/simpleInterest</loc>
+    <loc>https://calcwise.me/calculator/simpleInterest</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/compoundInterest</loc>
+    <loc>https://calcwise.me/calculator/compoundInterest</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/mortgage</loc>
+    <loc>https://calcwise.me/calculator/mortgage</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/creditCard</loc>
+    <loc>https://calcwise.me/calculator/creditCard</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/retirementSavings</loc>
+    <loc>https://calcwise.me/calculator/retirementSavings</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/savingsGoal</loc>
+    <loc>https://calcwise.me/calculator/savingsGoal</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/investmentReturn</loc>
+    <loc>https://calcwise.me/calculator/investmentReturn</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/sip</loc>
+    <loc>https://calcwise.me/calculator/sip</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/fd</loc>
+    <loc>https://calcwise.me/calculator/fd</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/rd</loc>
+    <loc>https://calcwise.me/calculator/rd</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/netWorth</loc>
+    <loc>https://calcwise.me/calculator/netWorth</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/budgetPlanner</loc>
+    <loc>https://calcwise.me/calculator/budgetPlanner</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/inflation</loc>
+    <loc>https://calcwise.me/calculator/inflation</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/breakEven</loc>
+    <loc>https://calcwise.me/calculator/breakEven</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <!--
   <url>
-    <loc>https://calcwise.vercel.app/calculator/carLoan</loc>
+    <loc>https://calcwise.me/calculator/carLoan</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://calcwise.vercel.app/calculator/personalLoan</loc>
+    <loc>https://calcwise.me/calculator/personalLoan</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>

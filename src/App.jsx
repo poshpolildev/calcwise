@@ -226,7 +226,7 @@ function App() {
   const location = useLocation();
 
   const siteName = "Calc Wise";
-  const baseCanonicalUrl = "https://calcwise.vercel.app"; // CHANGE TO poshpo.me WHEN READY
+  const baseCanonicalUrl = "https://calcwise.me"; // CHANGE TO poshpo.me WHEN READY
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 768);
 
